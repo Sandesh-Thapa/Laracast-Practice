@@ -8,7 +8,7 @@
     @if(!empty($posts))
         @foreach ($posts as $post)
             <article>
-                <h1>{{ $post->title }}</h1>
+                <h1>{!! $post->title !!}</h1>
                 <div>
                     {{ $post->excerpt }}
                     <a href="/posts/{{ $post->slug }}">View All &rAarr;</a>

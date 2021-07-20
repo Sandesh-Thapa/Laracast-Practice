@@ -2,63 +2,14 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\File; 
-use Spatie\YamlFrontMatter\YamlFrontMatter;
+use Illuminate\Database\Eloquent\Model;
 
-class Post {
+class Post extends Model
+{
+    protected $guarded = [];
+    //protected $fillable = ['title', 'excerpt', 'body'];
 
-    public $title;
-    public $excerpt;
-    public $date;
-    public $body;
-    public $slug;
-
-    public function __construct($title, $excerpt, $date, $body, $slug){
-        $this->title = $title;
-        $this->excerpt = $excerpt;
-        $this->date = $date;
-        $this->body = $body;
-        $this->slug = $slug;
-    }
-
-    public static function all () {
-        // $files =  File::files(resource_path("posts/"));
-        // $contents = [];
-
-        // for($i=0; $i<count($files); $i++){
-        //     $contents[$i] = $files[$i]->getContents();
-        // }
-        // return $contents;
-        
-        return collect(File::files(resource_path("posts")))
-            ->map(function($file){
-                return YamlFrontMatter::parseFile($file);
-            })
-            ->map(function ($document){
-                //$document = YamlFrontMatter::parseFile($file);
-                
-                return new Post(
-                    $document->title,
-                    $document->excerpt,
-                    $document->date,
-                    $document->body(),
-                    $document->slug
-                );
-            })->sortByDesc('date');
-    }
-
-    public static function find($slug){
-        return static::all()->firstWhere('slug', $slug);
-    }
-
-    public static function findOrFail($slug){
-        $post = static::find($slug);
-
-        if(!$post){
-            throw new ModelNotFoundException();
-        }
-
-        return $post;
-    }
+    // public function getRouteKeyName() {
+    //     return 'slug';
+    // }
 }

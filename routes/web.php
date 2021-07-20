@@ -15,40 +15,25 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    //$files =  File::files(resource_path("posts/"));
-    //$posts = [];
-
-    // $posts = array_map(function ($file){
-    //     $document = YamlFrontMatter::parseFile($file);
-        
-    //     return new Post(
-    //         $document->title,
-    //         $document->excerpt,
-    //         $document->date,
-    //         $document->body(),
-    //         $document->slug
-    //     );
-    // }, $files);
-
-    //foreach($files as $file){
-    //     $document = YamlFrontMatter::parseFile($file);
-
-    //     $posts[] = new Post(
-    //         $document->title,
-    //         $document->excerpt,
-    //         $document->date,
-    //         $document->body(),
-    //         $document->slug
-    //     );
-    // }
-
     return view('posts', [
         'posts'=>Post::all()
     ]);
 });
 
-Route::get('posts/{post}', function($slug){
+Route::get('posts/{post:slug}', function(Post $post){
     return view('post', [
-        'post' => Post::findOrFail($slug)
+        'post' => $post
     ]);
 });
+
+// Route::get('posts/{post}', function(Post $post){
+//     return view('post', [
+//         'post' => $post
+//     ]);
+// });
+
+// Route::get('posts/{post}', function($id){
+//     return view('post', [
+//         'post' => Post::findOrFail($id)
+//     ]);
+// });
